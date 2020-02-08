@@ -10,13 +10,11 @@ For Python Tutorial online resource.
 - 実行文のグループ化は、グループの開始や終了の括弧ではなくインデント
 - 変数や引数の宣言が不要
 - 拡張性: C 言語でプログラムを書く方法を知っているなら、簡単に新たな「組み込み関数やモジュール」を、簡単にインタプリタに追加可能. これによって、いちばん時間のかかる処理を高速化したり、ベンダ特有のグラフィクスライブラリなどの、 バイナリ形式でしか手に入らないライブラリを Python にリンクしたりできる
-
 ## Chapter2
 - python3 < filename のように標準入力ファイルとして指定すると、インタプリタはファイルから スクリプト を読み込んで実行
 - [コマンドラインと環境](https://docs.python.org/ja/3/using/cmdline.html#using-on-general)
 - [対話モード(interactive mode)](https://docs.python.org/ja/3/tutorial/appendix.html#tut-interac) ：インタプリタが命令を端末 (tty) やコマンドプロンプトから読み取っている場合, インタプリタは 対話モード で動作している. このモードでは, インタプリタは 「一次プロンプト (primary prompt)（三つの「大なり記号」 (>>>) ） 」を表示して, ユーザにコマンドを入力するよう促す. 継続行では, インタプリタは 「二次プロンプト (secondary prompt)（デフォルトでは三つのドット (...) -> 関数宣言時など, 行が複数に跨がる場合には二次プロンプト） 」を表示.
 - デフォルトエンコーディング以外のエンコーディングを使用するには, ファイルの 先頭 の行に特別なコメントを追加しなければならない. 例えば, Windows-1252 エンコーディングを使用するには, ソースコードの先頭に, # -*- coding: cp1252 -*- を追加.
-
 ## Chapter3
 #### 3.1.1. Number
 - // 演算子は 整数除算 を行う
@@ -71,7 +69,6 @@ For Python Tutorial online resource.
 #### 4.7.3 Special parameters 
 - \* や/(positional-onlyは, Python3.8 から)を使用することでpositional-only(仮引数の最後に`/`)かkeyword-only(仮引数の最初に`*`)または, positional-only or keyword-only(キーワードで指定した仮引数を前後`\, standard, *`とする)の指定ができる. `@function/specialparam.py`
 - positionalで指定したつもりの変数が, keywordパラメータの展開によって, 変数名が衝突してしまう場合がある. 例えば, `def f(name, **args)` を `f(1, **{'name':2})` のように呼び出すと, name仮引数が二つになり, エラーを投げる(`TypeError: f() got multiple values for argument 'name'`). これの対処法として, 意図的に初めのname仮引数はpositionalであると伝えれば良い. `def f(name, /, **args)` `@function/specialparam.py`
-
 #### 4.7.4 optional parameter list 
 - \*args を初めに指定することもでき, この場合その後に続く仮引数はキーワード引数によって区別することができる. `def f(*args, separater=','), f('I', 'am', 'hungry.', separater=' ')`
 #### 4.7.5 unpack parameter list
@@ -88,13 +85,12 @@ For Python Tutorial online resource.
 ### 4.8 間奏曲: コーディングスタイル 
 - 演算子の前後とコンマの後には空白を入れ, 括弧類のすぐ内側には空白を入れないこと: `a = f(1, 2) + g(3, 4)`
 - クラスや関数に一貫性のある名前を付けること. 慣習では UpperCamelCase をクラス名に使い、 lowercase_with_underscores を関数名やメソッド名に使う.
-
 ### 5.1 Data structure
-- `a[len(a):] = [x]` と `a.append(x)`は等価.　_角カッコをつけるべきかどうかに注意を払う_. 初めの式では iterable objectのみ代入できるのに対し, 後者では, list などのiterable object を代入すると, 多次元配列になるため, intなどのnon iterableを使う. この場合は, extend([])を使用して, iterable objectを挿入することで, _次元数を変えずに_ 挿入できる.
+- `a[len(a):] = [x]` と `a.append(x)`は等価.　_角カッコをつけるべきかどうかに注意を払う_. 初めの式では iterable objectのみ代入できるのに対し, 後者では, list などのiterable object を代入すると, 多次元配列になるため, intなどのnon iterableを使う. この場合は, extend([])を使用して, iterable objectを挿入することで, _次元数を変えずに_ 挿入できる.
 - `a.insert(len(a), x)` と `a.append(x)`は等価.
 - `a.clear` と `del a[:]` は等価.
 - copy()はshallow で `a[:]`と等価.
-- insert, remove, sort などのリストを操作するメソッドの戻り値はなく(変更可能なオブジェクトは返されず), d->insert("a")->remove("b")->sort(); のようなメソッドチェインはできない.
+- insert, remove, sort などのリストを操作するメソッドの戻り値はなく(変更可能なオブジェクトは返されず), d->insert("a")->remove("b")->sort(); のようなメソッドチェインはできない.
 #### 5.1.1
 - listを _スタック_ として使う. _last in first out_.
 #### 5.1.2
@@ -104,7 +100,7 @@ For Python Tutorial online resource.
 - `list(map(lambda x: x**2, range(10)))` や `[x**2 for x in range(10)]`は余分な変数を生成しなくてかつクリーンなコード. 変数xすら生成しない.
 - for loop のネストも可. `[(x, y) for x in [1,2,3] for y in [3,1,4] if x != y]` これは右角かっこに向かうにつれてネストの内側表現している. 
 #### 5.1.4. ネストしたリストの内包表記
-- 2x3の多次元配列を 3x2にトランスポーズするコードを簡単実装. `[[row(i) for row in marray] for i in range(3)]` 外側の[]から評価が始まるため, i=0で固定され, 内側の[]に入る. この中では, 行それぞれの0番目の値を引き抜いて, 一つの行にする. それを列の数分繰り返す. ちなみにこの操作は, `list(zip(*matrix))`と等価. zipは複数のイテレータを同じ要素番目の要素を組み合わせ, tupleで返す. `a, b=[0,1], [10, 20] zip(a, b) >>> [(0, 10), (1, 20)]` もしこのa, bが同じ変数の要素である場合, c=[[0,1],[10, 20]]ならば\*(unpack)で展開する. `zip(*c)`. もし, aとbの要素数が異なっている場合は, [`itertools.zip_longest() `](https://docs.python.org/ja/3/library/itertools.html#itertools.zip_longest)で, 足りない分は `fillvalue=None`などで, 大きい方に合わせることもできる.
+- 2x3の多次元配列を 3x2にトランスポーズするコードを簡単実装. `[[row(i) for row in marray] for i in range(3)]` 外側の[]から評価が始まるため, i=0で固定され, 内側の[]に入る. この中では, 行それぞれの0番目の値を引き抜いて, 一つの行にする. それを列の数分繰り返す. ちなみにこの操作は, `list(zip(*matrix))`と等価. zipは複数のイテレータを同じ要素番目の要素を組み合わせ, tupleで返す. `a, b=[0,1], [10, 20] zip(a, b) >>> [(0, 10), (1, 20)]` もしこのa, bが同じ変数の要素である場合, c=[[0,1],[10, 20]]ならば\*(unpack)で展開する. `zip(*c)`. もし, aとbの要素数が異なっている場合は, [`itertools.zip_longest() `](https://docs.python.org/ja/3/library/itertools.html#itertools.zip_longest)で, 足りない分は `fillvalue=None`などで, 大きい方に合わせることもできる.
 ### 5.2. del 文
 - del a[:] でカラ.
 - del a で変数自体消去.
@@ -123,3 +119,15 @@ For Python Tutorial online resource.
 - 辞書内包表現を使って、任意のキーと値のペアから辞書を作成. `{x: x*2 for x in range(3)} >>> {0: 0, 1: 2, 2: 4}`
 ### 5.7. 条件についてもう少し
 - Note that in Python, unlike C, assignment inside expressions must be _done explicitly _with the _walrus operator(セイウチ演算子) or Assignment Expressions_ `:=`. This avoids a common class of problems encountered in C programs: typing = in an expression when == was intended. Python 3.8 以降で利用可.
+### 6.1. モジュールについてもうすこし
+- モジュールレベルの関数定義を実行すると, 関数名はモジュールのグローバルなシンボルテーブルに入る.
+- import されたモジュール名は _import を行っているモジュールの_ グローバルなシンボルテーブルに置かれる.
+- `import importlib; importlib.reload(modulename)` のように importlib.reload() を使用し, 修正後のモジュールをリロードする.
+#### 6.1.1 モジュールをスクリプトとして実行する
+- コマンドライン からPython ファイルを実行すると, \_\_name\_\_ に \_\_main\_\_が設定される, ため, import できると同時にスクリプトとしても実行することができる. [`@tutorial/main.py`](https://github.com/RyotaBannai/Python_project/blob/master/tutorial/main.py)
+- この方法はモジュールに便利なユーザインターフェースを提供したり, テストのために (スクリプトをモジュールとして起動しテストスイートを実行して) 使わる.
+#### 6.1.2. モジュール検索パス
+- モジュールをインポートするとき, 1. インタープリターはまずその名前のビルトインモジュールを探す. 2. 見つからなかった場合, ファイルを sys.path にあるディレクトリのリストから探す. sys.path は次の場所に初期化される. 2.1 入力されたスクリプトのあるディレクトリ(あるいはカレントディレクトリ) 2.2 PYTHONPATH (ディレクトリ名のリスト. シェル変数の PATH と同じ構文) 2.3 インストールごとのデフォルト.  Python プログラムは 初期化された後、sys.path を修正するので, 2.1に標準ライブラリと同名のスクリプトがあると, 予期せぬエラーなることがある. [buildin とinstall先の場所について](https://docs.python.org/ja/3.6/install/index.html). buildin は, `build/lib`, install先の場所は, `/usr/local/lib/pythonX.Y/site-packages(など)`
+- シンボリックリンクをサポートするファイルシステム上では, 入力されたスクリプトのあるディレクトリはシンボリックリンクをたどった後に計算される. 言い換えるとシンボリックリンクを含むディレクトリは _モジュール検索パスに追加_ されない.
+
+#### 6.1.3. "コンパイル" された Python ファイル
