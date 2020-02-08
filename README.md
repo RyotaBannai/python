@@ -22,9 +22,9 @@ For Python Tutorial online resource.
 - // 演算子は 整数除算 を行う
 - 対話モードでは, 最後に表示された結果は変数 _ に代入される
 - [Decimalを使用することで、浮動小数点数の計算, 例えば、1.1+2.2==3.3のような計算を正確に実行できる.](https://docs.python.org/ja/3/library/decimal.html#decimal.Decimal)
-- 有理数計算はFractions (Decimalを使った場合, Decimal('-3.14').as_integer_ratio()とかでもでけきそう.)
+- 有理数計算はFractions (Decimalを使った場合, `Decimal('-3.14').as_integer_ratio()`とかでもでけきそう.)
 ### 3.1.2. String
-- 特殊文字を使用を表示するときは, print()で実行. 'C:\user\name'のように特殊文字を評価したくないときは, 引用符の前にrをつけたraw string を使う. print(r'C:\user\name')
+- 特殊文字を使用を表示するときは, print()で実行. `'C:\user\name'` のように特殊文字を評価したくないときは, 引用符の前にrをつけたraw string を使う. `print(r'C:\user\name')`
 - 複数行に跨がるときは, `"""\...\...\..."""`（三重引用符）のようにする. 
 - 文字列の連結は + または、間に空白のみを含む文字列リテラル. `'Py' 'thon' => 'Python', text = 'Py' \ 'thon'` is the same. これは文字列リテラルのみで可能. => 「リテラルと変数は連結できない」.　この場合 + を使用.
 - 文字列のスライス: `s[:i] + s[i:] == s` はtrue. (`s,i ='test test', 2`)
@@ -49,7 +49,7 @@ For Python Tutorial online resource.
 - range + len よりもenumerateの方がクリーン. `for data in list(enumerate(a, start=0))` enumerateはenumerateオブジェクトを作成する. enumerateの中ではyieldでつどtupleを返す. yield n, elem
 - イテレータ: 反復して要素を取り出すことが出来る型のこと. Pythonのリストやセット、辞書型はイテレーションすることが出来るため, これらのオブジェクトはイテレータ.
 - ジェネレータ: イテレータの一種. 要素を取り出すごとに処理を実行して、要素を生成することが出来る. yieldを使う. (return文は一度に大きなlistを返してしまい, 一度のたくさんのメモリを消費する恐れがある一方で, yieldは関数の実行を一時的に中断し, つどデータを返すため一度にたくさんのメモリを使わない.)
-- generatorを作成したら, genetator.\_\_next\_\_()で一つずつyieldを呼び出せる. \_\_next\_\_()は特殊メゾット. そのほかには, \_\_reversed\_\_() \_\_contains\_\_() など. 組み込み関数である, next(generator)は\_\_next\_\_()を呼び出し, 一つ一つ取り出す. `@yield.py`
+- generatorを作成したら, genetator.\_\_next\_\_()で一つずつyieldを呼び出せる. \_\_next\_\_()は特殊メゾット. そのほかには, \_\_reversed\_\_() \_\_contains\_\_() など. 組み込み関数である, next(generator)は\_\_next\_\_()を呼び出し, 一つ一つ取り出す. [`@yield.py`](https://github.com/RyotaBannai/Python_project/blob/master/yield.py)
 - もし複数のgeneratorを同じ関数で使いたいときは, yield from を使う. `@yield_from.py`
 - range() が返すオブジェクトは, いろいろな点でリストであるかのように振る舞いますが, 本当はリストではない. これは, イテレートした時に望んだ数列の連続した要素を返す「オブジェクト」です. しかし実際にリストを作るわけではないので, 「スペースの節約」になる. この性質を, iterableを呼ぶ.
 ### 4.5 path statement 
