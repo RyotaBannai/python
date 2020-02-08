@@ -1,7 +1,7 @@
 #-*- using:utf-8 -*-
 import time
 
-#Checkout the difference b/w yield and returns
+#Checkout the difference b/w yield and return
 def Myfunc(x:int):
   for y in range(x):
     yield y*2 #return each single time
