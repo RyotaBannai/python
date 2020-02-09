@@ -2,8 +2,8 @@
 The record of my own learning history of Python.
 
 # Memo
-For Python Tutorial online resource.
-
+For Python Tutorial online resource.<br>
+[用語集](https://docs.python.org/ja/3/glossary.html)<br>
 ## Chapter1
 - 可変長配列や辞書などの高級な型を組込みで持つ 超高級言語(very-high-level language) 
 - 標準モジュールには、ファイル I/O、システムコール、ソケットといった機能や、Tk のようなグラフィカルユーザインタフェースツールキットを使うためのインターフェイスなども提供
@@ -41,7 +41,7 @@ For Python Tutorial online resource.
 ## Chapter4 
 ### 4.1 
 - Python の制御構文は if 条件1: elif 条件2: else: >>> elif!
-- pythonで, phpのforeach($books as $id) を表現するには for id in books, もし辞書なら（phpなら連想配列） `for id in books.keys()` または `for value in books.values()` 同時にどちらも取り出すならば, `for id, value in books.items()` を使う.
+- pythonで, phpのforeach($books as $id) を表現するには for id in books, もし辞書なら（phpなら連想配列） `for id in books.keys()` または `for value in books.values()` 同時にどちらも取り出すならば, `for id, value in books.items()` を使う. これらのメソッドで返されたオブジェクトをDictionary view (辞書ビュー)という.
 - collectionなどの要素を消去したいときは, del. `users = {'user1': 'active', 'user2': 'inactive'}, del users['user1'] >>> users == {'user2': 'inactive'}`
 ### 4.3 
 - range + len よりもenumerateの方がクリーン. `for data in list(enumerate(a, start=0))` enumerateはenumerateオブジェクトを作成する. enumerateの中ではyieldでつどtupleを返す. yield n, elem
@@ -143,7 +143,7 @@ For Python Tutorial online resource.
 ### 6.4.
 - パッケージ (package) は, Python のモジュール名前空間を "ドット付きモジュール名" を使って構造化する手段. 例えば, モジュール名 A.B は、 A というパッケージのサブモジュール B を表す. ちょうど、モジュールを利用すると、別々のモジュールの著者が互いのグローバル変数名について心配しなくても済むようになるのと同じように, ドット付きモジュール名を利用すると,  NumPy や Pillow のように複数モジュールからなるパッケージの著者が, 互いのモジュール名について心配しなくても済むようになる. 
 ### 7.1. 出力を見やすくフォーマットする
-- フォーマット済み文字列リテラル を使うには、開き引用符や三重の開き引用符の前に f あるいは F を付けて文字列を始める. `year=2020; event='olympic'; f'results of the {year} {event}'`
+- フォーマット済み文字列リテラル を使うには、開き引用符や三重の開き引用符の前に f あるいは F を付けて文字列を始める. `year=2020; event='olympic'; f'results of the {year} {event}'` この先頭にfやFがついたも文字列リテラルのことを _f-string_ という.
 - パーセンテージや浮動小数点数の桁数などを指定したいときは, [format()関数](https://docs.python.org/ja/3/library/string.html#formatspec)を使う. `'{:-9}, YES votes {:2.2%}'.format(yes_votes, percentage)` `'{2}, {1}, {0}'.format(*'123')` unpackも使える.
 - `coord = (3, 5); 'X: {0[0]};  Y: {0[1]}'.format(coord)` {}で引数の要素へのアクセスも可能.
 - `"repr() shows quotes: {!r}; str() doesn't: {!s}".format('test1', 'test2')`
@@ -158,8 +158,18 @@ For Python Tutorial online resource.
 ### 7.2. ファイルを読み書きする
 - ファイルオブジェクトを扱うときに with キーワードを使うのは良い習慣. その利点, 処理中に例外が発生しても必ず最後にファイルをちゃんと閉じること. with を使うと, 同じことを try-finally ブロックを使って書くよりずっと簡潔に書ける.
 - with キーワードを使わない場合は, f.close() を呼び出してファイルを閉じ, そのファイルが使っていたシステムリソースをすぐに解放する必要がある. 明示的にファイルを閉じなかった場合は, いつかは Python のガベージコレクタがそのファイルオブジェクトを破棄し開かれいていたファイルを閉じるが, しばらくはファイルが開かれたままでいる可能性がある.
-#### 7.2.1. ファイルオブジェクトのメソッド
+#### 7.2.1. ファイルオブジェクト(file object, or file-like object) のメソッド
 - `with open('test.txt') as f`　で読み込んだファイルを, `list(f)`で一行ごとにリストにできる.
 #### 7.2.2 json による構造化されたデータの保存
 - 標準モジュール json は, Python のデータ 階層を取り, 文字列表現に変換する.（ _シリアライズ (serializing)_ ）文字列表現からデータを再構築することは、_デシリアライズ (deserializing)_.
 - json.dumpsはシリアライズ, json.loadはでシリアライズ. json.dumps(x, f)でfで指定するファイルに書き込み. 一方読み込みは, そのままjson.load(f).
+### 8.2. 例外
+- ZeroDivisionError, NameError, TypeError などの例外型として出力される文字列は、発生した例外の組み込み名.
+- try...except文 でエラーをキャッチできなかった場合, an unhundled error となり, システムのエラーが発動される. tryの結果を受けて処理をする _else_ を書いておくこともできる. else を指定した場合でも, an unhundled errorであることには変わりないため, どのエラーハンドラーでもエラーをキャッチできない場合は, システムのエラーが発動される.
+### 8.3. [例外を処理する](https://docs.python.org/ja/3/tutorial/errors.html#handling-exceptions)
+- exceptには複数のエラータイプを指定できる. `except (RuntimeError, TypeError, NameError):` 
+- except 節のクラスは、例外と _同じクラスか 基底クラス_ のときに互換 (compatible)となる. つまり _派生クラス_ の例外がリストされている except 節は基底クラスの例外と互換ではない. => もし基底クラスをexceptの最初に記述した場合, その派生クラスの例外が全て基底クラスでハンドルされる. 基底クラスのハンドラーは最後に記述.  
+- 例外ハンドラは, try 節の直接内側で発生した例外を処理するだけではなく, その try 節から (たとえ間接的にでも) 呼び出された _関数の内部で発生した例外_ も処理.
+### 8.6. クリーンアップ動作を定義する
+- finally 節は常に発動される. これは, (ファイルやネットワーク接続などの) 外部リソースを、利用が成功したかどうかにかかわらず解放するために便利. 
+- errorが発生した場合, 基本的にはfinally が先に呼ばれて, その後にerror messageが表示される. `@tutorial/error.py`
