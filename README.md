@@ -231,3 +231,24 @@ For Python Tutorial online resource.<br>
 - ジェネレータの定義がコンパクトになるのは __iter__() メソッドと __next__() メソッドが自動で作成されるから.
 ### 9.10. ジェネレータ式
 - 単純なジェネレータなら式として簡潔にコーディングできる. その式はリスト内包表記に似た構文を使うが, 角括弧ではなく丸括弧で囲う.   `unique_words = set(word for line in page  for word in line.split())`
+## 10. 標準ライブラリミニツアー
+### 10.1.
+- os.system でコマンドを実行できる. [subprocess](https://www.sejuku.net/blog/65485)の方が細かいことまでできる. 
+### 10.2. ファイルのワイルドカード表記
+- globでディレクトリ内のファイルのリストを生成. PurePathなどでpathを指定してglobを利用すると便利. `PurePath('Home/Documents').glob('*.py')` >>> Documents内の全てのPythonファイルのリストを取得.
+### 10.3. コマンドライン引数
+- argparse を使うとカスタムコマンドを作成できる. `@tutorial/parse.py`
+### 10.6. 数学
+- `random.sample(range(100), 10)` など.
+### 10.7. インターネットへのアクセス
+- URL からデータを取得するための urllib.request やメールを送るための smtplib.
+### 10.9. データ圧縮
+- zlib compress <-> decompress
+### 10.10. パフォーマンスの計測
+- profile/ Cprofileで測定し, pstats モジュール で測定結果の調整（フォーマット）を行う. pstats.Stats()のstream キーワードにioモジュールを渡せばプロファイルデータをファイルに書き出すことができる.
+### 10.11. 品質管理
+- 高い品質のソフトウェアを開発するための一つのアプローチは, 各関数に対して開発と同時にテストを書き, 開発の過程で頻繁にテストを走らせることである.
+- `doctest モジュール`: モジュールを検索してプログラムの docstring に埋め込まれたテストの評価を行うためのツール. もし, 記述した予測結果（ここでは40.0）計算結果とが違ったとき, `***Test Failed*** 1 failures.`が表示される.  `@tutorial/testDoctest.py`
+- または, `unittest モジュール`でより詳細な設計をする. `@tutorial/testUnittest.py`
+### 10.12. バッテリー同梱
+- 遠隔手続き呼び出し (remote procedure call): xmlrpc.client および xmlrpc.server モジュール
