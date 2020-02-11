@@ -272,3 +272,18 @@ For Python Tutorial online resource.<br>
 - `collections` モジュールでは, deque() オブジェクトを提供. リスト型に似ているが, データの追加と左端からの取り出しが速く, その一方で中間にある値の参照は遅くなる. こうしたオブジェクトは`キューや木構造の幅優先探索`の実装に向いている. 
 - `bisect`: ソート済みのリストを操作するための関数. `scores = [(100, 'perl'), (200, 'tcl'), (400, 'lua'), (500, 'python')]; bisect.insort(scores, (300, 'ruby')) >>> [(100, 'perl'), (200, 'tcl'), (300, 'ruby'), (400, 'lua'), (500, 'python')]`
 - `heapq` :通常のリストでヒープを実装するための関数. ヒープでは, 最も低い値をもつエントリがつねにゼロの位置に配置される. ヒープは, _毎回リストをソートすることなく_, 最小の値をもつ要素に繰り返しアクセスするようなアプリケーションで便利.
+## 12. 仮想環境とパッケージ
+- 仮想環境: 特定のバージョンの Python と幾つかの追加パッケージを含んだ Python インストールを構成するディレクトリ. _アプリケーションごと_ にPythonやパッケージのバージョンを管理.
+- venv: 仮想環境の作成と管理を行うためのモジュール. 複数のpython がインストールされている場合, 初めの引数でバージョンを指定.
+- `source venv-env/bin/activate` でアクティベート. `deactivate`ででアクティベート. 
+- [Python モジュールのインストール ガイド](https://docs.python.org/ja/3/installing/index.html#installing-index)
+- `pip search [package name]`でpackageの詳細を検索.
+- `pip list`でインストール済みのpackageを表示. 
+- `pip show [package name]`でpackageの詳細を表示.
+- インストールされてる全てのpackages を`pip freeze`で`requirements.txt`として出力. 他のユーザーはそれを`install -r`でローカルな環境に全てインストール.
+## 13. さあ何を？
+- [Python 標準ライブラリ](https://docs.python.org/ja/3/library/index.html#library-index): Unix メールボックスの読み込み、HTTPによるドキュメント取得、乱数の生成、コマンドラインオプションの構文解析、CGIプログラムの作成、データ圧縮
+- [Python 言語リファレンス](https://docs.python.org/ja/3/reference/index.html#reference-index): Pythonの文法とセマンティクス
+- [Python Cookook](https://code.activestate.com/recipes/langs/python/)
+## 
+- `bpython` の方がpython interpreter(REPL: Read–eval–print loop)よりも使いやすい. タブの自動補完などサポート. `pip install bpython -> $ echo 'export PATH="$HOME/Library/Python/2.7/bin:$PATH"' >> ~/.bash_profile -> source .bash_profile`
