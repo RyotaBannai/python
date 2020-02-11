@@ -285,5 +285,19 @@ For Python Tutorial online resource.<br>
 - [Python 標準ライブラリ](https://docs.python.org/ja/3/library/index.html#library-index): Unix メールボックスの読み込み、HTTPによるドキュメント取得、乱数の生成、コマンドラインオプションの構文解析、CGIプログラムの作成、データ圧縮
 - [Python 言語リファレンス](https://docs.python.org/ja/3/reference/index.html#reference-index): Pythonの文法とセマンティクス
 - [Python Cookook](https://code.activestate.com/recipes/langs/python/)
-## 
+## 14. 対話入力編集と履歴置換
 - `bpython` の方がpython interpreter(REPL: Read–eval–print loop)よりも使いやすい. タブの自動補完などサポート. `pip install bpython -> $ echo 'export PATH="$HOME/Library/Python/2.7/bin:$PATH"' >> ~/.bash_profile -> source .bash_profile`
+## 15. 浮動小数点演算、その問題と制限
+- *表現エラー(Representation error)*: いくつかの (実際にはほとんどの) 10 進の小数が 2 進法 (基数 2)の分数として表現できないという事実に関係している.
+- `1 + .1 == .2 >>> True, .1 + .1 + .1 == .3 >>> False` これは, 0.1 はこれ以上 1/10 に近くなることができない値で、 0.3 もまた 3/10 に一番近い値であるため.
+- _浮動小数点演算_ は 10 進の演算ではなく, 浮動小数点の演算を新たに行うと, 新たな丸め誤差の影響を受ける.
+- 浮動小数点数に関して細かい制御を行いたい場合は, `str.format` 例えば, `"{:.5}".format(10/3.0) や format(3.3, '.5f')`とすれば, 整数部分も含めて, 5桁で統一できる. _`str.format`はintには使えない._
+- 会計計算等で, 正確な10進数表現が必要となるような場合には, `decimal モジュール`
+- `fractions モジュール`で `Fraciton('0.3') >>> Fraciton(3, 10) float(Fraciton(3, 10)) >>> 0.3` とすれば, 正確に表現できる. `Fraciton(1, 3) >>> Fraciton(1, 3), float(Fraciton(1, 3)) >>> 0.3333....`無理数になる数値を渡したときは, そのまま返す.
+- 本当に float の正確な値が必要なレアケースに対応するためのツール `float.as_integer_ratio() `はfloatを有理数として表現. `(1/3.).as_integer_ratio() >>> (6004799503160661, 18014398509481984)`
+- 10進数と16進数間の変換. `float.hex() <-> float.fromhex()` `(1/3.).hex() >>> '0x1.5555555555555p-2', float.fromhex('0x1.5555555555555p-2') 0.3333333333333333` 16進数は正確であるため, JavaやC99との値の受け渡しも可能.
+- `math.fsum()`: 合計処理における _精度のロスを緩和_ してくれる math.fsum() 関数. この関数は値を合計値に足し込みながら, "失われた桁" を管理する. これにより, 誤差が最終的な合計値に影響を与えるまで蓄積されなくなり, 結果が改善される. ただし, 桁数が同じで, わずかな誤差がある場合に比較をしたときとき, Falseになりやすい. 
+## 16. 付録
+- `#!/usr/bin/env python3.5` Pythonファイルの先頭に`シバン（Shebang）`を入れることで, 任意のPythonのバージョンで実行できる. `#!python3`と指定すれば, インストールされているPython3のなかで最新のバージョンで実行される.
+- インタープリターを立ち上げるときに, デフォルトで欲しいセッティング (os, sysなどの標準モジュールなどのimport)は, 起動時に見込まれるPYTHONSTARTUPに書いておくといい. 
+- Python3用のパッケージ管理はpipではなくて, `pip3`.
