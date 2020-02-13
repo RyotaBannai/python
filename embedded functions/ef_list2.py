@@ -47,6 +47,12 @@ class cmethod2(object):
     print(cls.__name__)
   whatever = classmethod(whatever)
 
+  # dir()
+  # 対象のスコープに存在している名前のリストを返し  
+  # 対象のオブジェクトの実装によって、dir()が返す値はことなってくる. __dir__() メソッドが実装されている場合は, 優先して__dir__()が呼び出される.
+class usedir(object):
+  def __dir__(self):
+    return ['Python', 'Is', 'So', 'Fun']
 
 if __name__ == "__main__":
   print(('-'*4+'{:^10}'+'-'*4).format('call'))
@@ -96,3 +102,6 @@ if __name__ == "__main__":
     [fruits[data] for data in sorted(fruits)])
     ])
   print(inventory)
+
+  print(dir(usedir()))
+
