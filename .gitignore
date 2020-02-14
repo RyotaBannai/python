@@ -1,2 +1,4 @@
 *venv-env/
 .pythonrc
+*notebook/Julia/.ipynb_checkpoints
+*notebook/Python/.ipynb_checkpoints
