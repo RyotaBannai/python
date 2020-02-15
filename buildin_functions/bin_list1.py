@@ -2,14 +2,15 @@
 # -*- coding: utf-8 -*-
 
 def test_all():
-  if all( [ 1==1, 2==2, 3==3 ] ):
-    return True
-  else: return  False 
+  return True if all( [ 1==1, 2==2, 3==3 ] ) else False
 
 def test_any():
-  if any( [ 1==2, 2==3, 3==4, 4==4 ] ):
-    return True
-  else: return False
+  #三項演算子
+  return True if any( [ 1==2, 2==3, 3==4, 4==4 ] ) else False
+
+def ternary_op_elif(x:int) -> str:
+  #三項演算子でelif
+  return 'x is 1' if x==1 else 'x is x' if x==2 else 'x is neither 1 nor 2' 
 
 # ascii(): repr()と同じように可能であればeval()で評価すると引数と同様のオブジェクトになる文字列を, そうでない場合# は、<>で囲まれたオブジェクトの情報を返却. 
 # repr()との違いは非ASCII文字が\x \u \U を使ってユニコードのコードポイントとしてエスケープされるということ.  
@@ -66,8 +67,9 @@ class cmethod2(object):
 
 
 if __name__ == "__main__":
-  print(test_all())
-  print(test_any())
+  print("test_all()>",test_all())
+  print("test_any()>", test_any())
+  print("ternary_op_elif()>", ternary_op_elif(1))
   print(('-'*4+'{:^10}'+'-'*4).format('bool'))
   print(bool(c()))
   print(('-'*4+'{:^10}'+'-'*4).format('call'))

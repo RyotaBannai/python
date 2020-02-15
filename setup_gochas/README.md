@@ -9,6 +9,12 @@
 - Install anaconda (not miniconda) and it snstalls all of dependancies such as, numpy, matplotlib as well as pandas.
 ## How to use Jupyter Notebook on windows
 - **Install anaconda (and of course add the path)** then you can hit the command `jupyter notebook` on **Powershell or whatever**. the localhost will be running and redirect to local browser.
+- The path should be added is below five paths if you still haven't added them.
+- `C:\Users\[Your User Name]\Anaconda3`
+- `C:\Users\[Your User Name]\Anaconda3\Library\mingw-w64\bin`
+- `C:\Users\[Your User Name]\Anaconda3\Library\usr\bin`
+- `C:\Users\[Your User Name]\Anaconda3\Library\bin`
+- `C:\Users\[Your User Name]\Anaconda3\Scripts`
 
 ### How to use Julia on Jupyter Notebook on Windows.
 - First insatll Julia from official [page](https://julialang.org/downloads/)
