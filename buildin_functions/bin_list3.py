@@ -8,6 +8,9 @@ class Dog(object):
     self.__secret = secret
 
 if __name__ == "__main__":
+  # eval()が実行できるのは「式」であり、「文」の実行にはexec()を使う. 
+  # 従って、eval('2**10')は1024を返却するが, eval('x=2**10')は代入文なのでエラー.
+
   # eval(): evaluate statemet, so you can't pass assignment. assignemnt is for exec()
   print(eval("2**3"))
   exec("import math; x=math.pi; print(format(x, '*^11.5f'))") # exec only evaluates Python scripts, thus exec function returns None.
