@@ -6,10 +6,7 @@
 import datetime, io #, cgi
 import urllib.parse
 from xml.sax import saxutils
-from wsgiref import simple_server, util
-
-
-#ミドルウェアを使用すれば, もっと再利用性のある__call__を実装をすることができる.
+from wsgiref import util
 
 class Server(object):
 	def __init__(self):
@@ -107,7 +104,3 @@ class Server(object):
 		start_response('200 OK', [('Content-type', 'text/html; charset=utf-8')])
 		return fp 
 		# ファイルオブジェクト同様、StringIOもiterable なので, WSGIappの返り値をして利用可能. ただし, write()で文字列を出力した後は、バッファの読み出し位置が変わってしまうため、seekメソッドで読み出し位置を先頭に設定した後で返り値として使用する.
-
-if __name__ == '__main__':
-	server = simple_server.make_server('', 8080, Server())
-	server.serve_forever()

@@ -3,3 +3,5 @@
 *notebook/Julia/.ipynb_checkpoints
 *notebook/Python/.ipynb_checkpoints
 *buildin_functions/__pycache__
+/scrape/__pycache__/
+/server/__pycache__/
