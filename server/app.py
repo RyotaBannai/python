@@ -18,7 +18,7 @@ class Server(object):
 	#self: Pythonでは, C++やRubyなどと違い, 呼び出し元インスタンスを明示的に引数として取る
 	def __call__(self, environ, start_response):
 		method = environ['REQUEST_METHOD']
-		if method == 'GED':
+		if method == 'GET':
 			return self.listMessages(environ, start_response)
 		elif method == 'POST':
 			return self.addMessage(environ, start_response)
@@ -36,6 +36,11 @@ class Server(object):
 		#postされたデータのパースには、cgiモジュールのparse_qsl, parse_qsを使う. -> cgi module is deprecated from python3.2 or older
 		#query = dict(cgi.parse_qs(inpt.read(length))) #dict([(key, value), (key, value)])
 		query = dict(urllib.parse.parse_qs(inpt.read(length))) #dict([(key, value), (key, value)])
+		tmp = {}
+		for k, v in query.items():
+			#print(k, v)
+			tmp[k.decode('utf-8')] = v[0].decode('utf-8')
+		query = tmp
 		msg = {
 			'name': query['name'],
 			'title': query['title'],
@@ -45,51 +50,56 @@ class Server(object):
 		
 		# Redirect
 		# 直接listMessagesを呼び出してもいいが、その場合、書き込んだ後にリロードすると、二重で書き込みをしてしまうため、redirectの方がいい.
-		start_response('302 Found', [('Content-type', 'text/plain'),'Location', util.request_uri(environ)])
+		start_response('303 See Other', [
+			('Content-type', 'text/plain'), 
+			('Location', util.request_uri(environ))])
 		
 		return ''
+
 	def	listMessages(self, environ, start_response):
 		#レスポンス本文の生成には、StringIOクラスを利用.
 		#StringIO: メモリ上のバッファに対してファイルオブジェクトのような入出力操作を提供するオブエクト.このStringIOに, レスポンスとしてHTMLをwriteメソッドを使用して書き出していく.
-		fp = io.StringIO()
-		head = '<html> \
-						<head><title>Message Board</title> \
-						<meta http-equiv="Content-type" content="text/html; charset=utf-8"> \
-						</head><body>'
-
-		fp.write(head.encode())
+		fp = io.BytesIO()
+		head = r'''<html>
+<head><title>Message Board</title>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+'''
+		fp.write(head.encode('utf-8'))
 		for msg in reversed(self.messages):
 		
 			esc = saxutils.escape #投稿内容にあるHTMLタグを無効化. XSS対策.
 			tmp={}
 			for key, value in msg.items():
 				value = str(value)
-				tmp[key] = str(esc(str(value, 'utf-8', 'ignore')))
-			data = '<dl> \
-<dt>title</dt> \
-<dd>{title}</dd> \
-<dt>name</dt> \
-<dd>{name}</dd> \
-<dt>date</dt> \
-<dd>{date}</dd> \
-<dt>message</dt> \
-<dd>{body}</dd> \
-</dl><hr />'.format(tmp) 
-			fp.write(data.encode())
+				tmp[key] = str(esc(value))
+				print(key, str(esc(value)))
+			data = '''<dl>
+<dt>title</dt>
+<dd>{title}</dd>
+<dt>name</dt>
+<dd>{name}</dd>
+<dt>date</dt>
+<dd>{date}</dd>
+<dt>message</dt>
+<dd>{body}</dd>
+</dl><hr />'''.format(**tmp)
+			fp.write(data.encode('utf-8'))
 
-		data = '<form action="{}" method="POST" AcceptEncoding="utf-8">\
-<dl>\
-<dt>name</dt>\
-<dd><input type="text" name="name"/></dd>\
-<dt>title</dt>\
-<dd><input type="text" name="title"/></dd>\
-<dt>body</dt>\
-<dd><textarea name="body"></textarea></dd>\
-</dl>\
-<input type="submit" name="save" value="Post" />\
-</form>\
-</body></html>'.format(util.request_uri(environ))
-		fp.write(data.encode())
+		data = '''<form action="{}" method="POST" AcceptEncoding="utf-8">
+<dl>
+<dt>name</dt>
+<dd><input type="text" name="name"/></dd>
+<dt>title</dt>
+<dd><input type="text" name="title"/></dd>
+<dt>body</dt>
+<dd><textarea name="body"></textarea></dd>
+</dl>
+<input type="submit" name="save" value="Post" />
+</form>
+</body></html>'''.format(util.request_uri(environ))
+		fp.write(data.encode('utf-8'))
 		
 		#シークの位置を先頭にしておく
 		fp.seek(0)

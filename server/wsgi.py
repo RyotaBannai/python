@@ -13,10 +13,10 @@
 def serve(environ, start_response):
 	
 	start_response('200 OK', [('Content-type', 'text/plain')])	
-	return 'Hello, world!'
+	return ['Hello, world!'.encode("utf-8")]
 
 from wsgiref import simple_server
 
 if __name__ == '__main__':
-	server = simple_server.make_server('', 8080, serve)
-	server.serve_forever()
+	with simple_server.make_server('', 8080, serve) as httpd:
+		httpd.serve_forever()
