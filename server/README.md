@@ -20,3 +20,11 @@
 - `textwrap.TextWrapper(width=50).fill(text=somelongtexts);` で一列の文字数を50以下に整形することができる.
 - `textwrap.shorten(text=hugetext, width=100)`で100文字だけにすることができる. `placeholder="..."` みたに隠させた部分の表示方法も変えられる.
 - `textwrap.TextWrapper(width=50).wrap(text=somelongtexts);` -> `wrap` メソッドはラップされた文字グループをリストにして返す. ex, `['This function returns the answer as STRING and not', 'LIST.']`
+
+## uWSGI
+- [わかりやすい記事](https://www.python.ambitious-engineer.com/archives/1959)
+- ([ついでにflask入門編も楽しそう. ](https://www.python.ambitious-engineer.com/archives/1630))
+- uWSGI: PythonでWebサービスを動かすための**アプリケーションサーバ**(**APサーバー**)の一種. WSGIに則ったアプリケーションを動作させるアプリケーションサーバを**WSGIアプリケーションコンテナ**や**WSGIサーバ**などと呼ぶ. uWSGIはこのWSGIアプリケーションコンテナの一種. つまり, WSGIに準拠したアプリケーションであれば, DjangoやFlask以外でも動かすことができる. WSGIサーバーにはuWSGI以外にGunicornがある.
+- uWSGIは動作させたアプリケーションと**Webサーバー(ApacheやNginx)**とをUNIXドメインソケット, またはHTTPで通信させる. WebサーバーはクライアントとHTTPで通信.
+- **静的ファイルがないAPI**の場合はWebサーバーを経由せずに、直接クライアントと通信するのも一つの手.
+- uWSGI をファイル実行する場合は `$ uwsgi uwsgi.ini`
