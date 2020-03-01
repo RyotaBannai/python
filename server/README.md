@@ -30,3 +30,10 @@ m = textwrap.indent(text=s.strip(), prefix= '+ ', predicate=lambda line: 'Tokyo'
 - uWSGIは動作させたアプリケーションと**Webサーバー(ApacheやNginx)**とをUNIXドメインソケット, またはHTTPで通信させる. WebサーバーはクライアントとHTTPで通信.
 - **静的ファイルがないAPI**の場合はWebサーバーを経由せずに、直接クライアントと通信するのも一つの手.
 - uWSGI をファイル実行する場合は `$ uwsgi uwsgi.ini`
+
+## gunicorn + nginx
+- gunicorn 起動 `gunicorn app:app -c $(pwd)/gunicorn/config/gunicorn_settings.py`
+- nginx 起動 `nginx -c $(pwd)/gunicorn/config/nginx.conf`
+- nginx 停止 `nginx -s stop`
+- nginx 起動確認 `ps aux | grep nginx`
+- nigix ポートの確認 `lsof -i -P | grep nginx`
