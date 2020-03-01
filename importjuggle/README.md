@@ -1,1 +1,1 @@
-# Research on Python import jungle.
+# Exploring on Python import jungle.
