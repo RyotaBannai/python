@@ -20,7 +20,7 @@ m = textwrap.indent(text=s.strip(), prefix= '+ ', predicate=lambda line: 'Tokyo'
 >>> + I'm from Tokyo.
 ```
 - `textwrap.TextWrapper(width=50).fill(text=somelongtexts);` で一列の文字数を50以下に整形することができる.
-- `textwrap.shorten(text=hugetext, width=100)`で100文字だけにすることができる. `placeholder="..."` みたに隠させた部分の表示方法も変えられる.
+- `textwrap.shorten(text=hugetext, width=100)`で100文字だけにすることができる. `placeholder="..."` みたいに隠した部分の表示方法も変えられる.
 - `textwrap.TextWrapper(width=50).wrap(text=somelongtexts);` -> `wrap` メソッドはラップされた文字グループをリストにして返す. ex, `['This function returns the answer as STRING and not', 'LIST.']`
 
 ## uWSGI
