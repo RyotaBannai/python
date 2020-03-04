@@ -35,5 +35,11 @@ m = textwrap.indent(text=s.strip(), prefix= '+ ', predicate=lambda line: 'Tokyo'
 - gunicorn 起動 `gunicorn app:app -c $(pwd)/gunicorn/config/gunicorn_settings.py`
 - nginx 起動 `nginx -c $(pwd)/gunicorn/config/nginx.conf`
 - nginx 停止 `nginx -s stop`
-- nginx 起動確認 `ps aux | grep nginx`
+- nginx 起動確認 `ps aux | grep nginx`  `ps -ax | grep nginx`
 - nigix ポートの確認 `lsof -i -P | grep nginx`
+
+## なぜ, webサーバとアプリケーションサーバを分けるのか.
+- つてはWebサーバとアプリケーションサーバの分割はされていなかった. この構成が問題となったのは、インターネットの普及に伴い、一般公開しているサービスに対するアクセス数が増えたことでサーバへの負荷が高まり、全体的にパフォーマンスが落ちるという自体に直面したときだった.
+そこで、負荷を分散させることで安定稼働することを目指し、役割に応じてサーバを分割する流れになった. この思想が現代においては当たり前で、一般的にWebサービスは**Webサーバ<-->アプリケーションサーバ<-->DBサーバと**いう三層構造で作られている. 
+- リバースプロキシの用途: セキュリティーの強化, 不可分散（ロードバランサ）、コンテンツをキャッシュ化するなどによる高速化.
+- [わかりやすい記事参照こちら.] (https://qiita.com/mintak21/items/eeba4654a0db21abcb1c)
