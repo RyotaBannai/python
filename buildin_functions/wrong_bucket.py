@@ -23,25 +23,27 @@ if __name__ == '__main__':
     b = UnhashableInFact(2)
     mydict = {a: "value for 1", b: "value for 2"}
     print(mydict[a], mydict[b]) # (1) それぞれのバケツから値を取り出せる
-    a.n = 2                     # →ハッシュ値が変わる
+    a.n = 2                     # -> ハッシュ値が変わる
     print(mydict[a], mydict[b]) # (2)
     c = UnhashableInFact(1)
-    print(c in mydict)          # (3)元のキーと等しいものを持ってきても "value for 1" が取り出せない → hashable であれば、このようなことは起きない.  hashable: int, frozenset, str, tuple
+    print(c in mydict)          # (3) 元のキーと等しいものを持ってきても "value for 1" が取り出せない
+                                # -> hashable であれば、このようなことは起きない.  hashable -> int, frozenset, str, tuple
 
-    #unhashableを明示的にunhashableにするには __hash__を Noneと設定することで, TypeError が送出
+    # unhashable を明示的にunhashable にするには __hash__を Noneと設定することで, TypeError が送出
     d = Unhashable(1)
-    #{d: "value for 1"} #>>> TypeError: unhashable type: 'Unhashable'
+    # {d: "value for 1"} # >>> TypeError: unhashable type: 'Unhashable'
     """
     Python3 では、__eq__ をオーバーライドすると勝手に None にしてくれる。
-    __eq__() をオーバーライドしていて __hash__() を定義していないクラスは、暗黙的
-    に None に設定された __hash__() を持ちます。-> つまり、__hash__ == None すら必要ない。
+    __eq__() をオーバーライドしていて __hash__() を定義していないクラスは、
+    暗黙的に None に設定された __hash__() を持つ. -> つまり、__hash__ == None すら必要ない。
     
-    クラスの __hash__() メソッドが　None の場合、そのクラスのインスタンスのハッシュ値を取得しようとすると適切な　TypeError が送出され、 isinstance(obj, collections.Hashable) をチェック 
-    するとハッシュ不能なものとして正しく認識されます。  
+    クラスの __hash__() メソッドが　None の場合、そのクラスのインスタンスのハッシュ値を取得しようとすると
+    適切なTypeError が送出され, isinstance(obj, collections.Hashable) をチェック すると
+    ハッシュ不能なものとして正しく認識される.
     """
-
 
     # immutable and hashable
     """
-    immutable の使いどころとして、辞書におけるキーが挙げられている。
+    immutable の使いどころとして、
+    辞書におけるキーが挙げられている。
     """
