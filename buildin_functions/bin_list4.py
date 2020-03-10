@@ -40,7 +40,8 @@ if __name__ == "__main__":
   print(int(MyInt())) #>>>42
   print(int(MyFloat(3.1415))) #>>>3
 
-  #isinstance() : 指定したオブジェクトが、あるクラスのインスタンスかどうかを判定しTrue/Falseを返却します。親クラスや先祖クラスが比較対象の場合も同様に真を返します。
+  #isinstance() : 指定したオブジェクトが、あるクラスのインスタンスかどうかを判定しTrue/Falseを返却します。
+  # 親クラスや先祖クラスが比較対象の場合も同様に真を返します。
   print(isinstance(1, int))
 
   class Newint(int): pass
