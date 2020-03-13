@@ -4,3 +4,4 @@
 # ignoring any 'bin' directory on a git project -> just bin/ will ignore all bin dir in current and subdir.
 .ipynb_checkpoints/
 __pycache__/
+advanced_usage/.mypy_cache/
