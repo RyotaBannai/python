@@ -1,5 +1,6 @@
 # how to marge dict
 from copy import deepcopy
+import itertools
 
 
 def merge_two_dict(a: dict, b: dict):
@@ -71,4 +72,14 @@ if __name__ == "__main__":
     have_the_same_keys = {'a': {1: 'Some', 2: 'thing'},
                           'a': {3: 'any', 4: 'thing'}
                           }
-    print(have_the_same_keys['a'])
+    # print(have_the_same_keys['a'])
+
+    # dict comprehension: -> hahaha doesn't work
+    # dict_comp = {k: v for d in mutiple_layered_y for k,
+    #             v in d.items() if not isinstance(d, str)}
+
+    # by using itertools
+    x_items = mutiple_layered_x.items()
+    y_items = mutiple_layered_y.items()
+    new_items_with_original_orders = dict(itertools.chain(x_items, y_items))
+    print(new_items_with_original_orders)
