@@ -15,7 +15,7 @@ def judge_if_same(dictA, dictB) -> bool:
 
 def compare_dict(a, b):
     """
-    This is the super useful when which values are different.
+    This is the super useful when you wanna know which values are different.
     Compares two dictionaries..
     Posts things that are not equal..
     """
