@@ -31,6 +31,9 @@ def lumberstack():
 
 
 def mytraceback():
+    """
+    自作のtraceback
+    """
     tb_list = traceback.format_list([('spam.py', 3, '<module>', 'spam.eggs()'),
                                      ('eggs.py', 42, 'eggs', 'return "bacon"')])
     an_error = IndexError('tuple index out of range')
