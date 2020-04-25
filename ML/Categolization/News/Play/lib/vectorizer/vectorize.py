@@ -6,8 +6,9 @@ from collections import Counter
 import numpy as np
 from sklearn.decomposition import IncrementalPCA
 
-from ncl import settings, utils
-from ncl.tokenizer import news_tokenizer
+from config import conf
+from lib.utility import utils
+from lib.tokenizer import tokenize
 
 
 class Metadata:
@@ -30,7 +31,7 @@ class Metadata:
         self.idf = {}
 
     def build(self, min_token_len: int):
-        wakati_gen = news_tokenizer.read_tokenized_news()
+        wakati_gen = tokenize.read_tokens()
         for category, tokens in wakati_gen:
             if min_token_len >= len(tokens):
                 continue
@@ -119,20 +120,20 @@ class PcaTfidfVectorizer:
 def main():
 
     meta = Metadata()
-    meta.build(min_token_len=settings.MINIMUM_TOKEN_LENGTH)
+    meta.build(min_token_len=conf.MINIMUM_TOKEN_LENGTH)
     print('TFIDF calculated')
 
-    pca_tfidf = PcaTfidfVectorizer(meta)
-
-    learning_data = pca_tfidf.vectorize(meta.tokenized_news)
-    print('vectorizing finished')
-
-    dirname = './data/vector/tfidf/'
-    if not os.path.isdir(dirname):
-        os.mkdir(dirname)
-
-    utils.pickle_dump(meta, dirname + 'tfidf.meta')
-    print('Meta data was dumped.')
-
-    utils.pickle_dump(learning_data, dirname + 'tfidf.data')
-    print('Learning data was dumped.')
+    # pca_tfidf = PcaTfidfVectorizer(meta)
+    #
+    # learning_data = pca_tfidf.vectorize(meta.tokenized_news)
+    # print('vectorizing finished')
+    #
+    # dirname = './data/vector/tfidf/'
+    # if not os.path.isdir(dirname):
+    #     os.mkdir(dirname)
+    #
+    # utils.pickle_dump(meta, dirname + 'tfidf.meta')
+    # print('Meta data was dumped.')
+    #
+    # utils.pickle_dump(learning_data, dirname + 'tfidf.data')
+    # print('Learning data was dumped.')

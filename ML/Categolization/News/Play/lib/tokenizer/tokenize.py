@@ -14,6 +14,8 @@ import mojimoji as mj
 from config import conf
 from lib.utility import utils
 
+# MAKE_PATH = lambda f: os.path.join(os.path.dirname(__file__), "./corpus/" + f)
+
 
 class Tokenizer:
     def __init__(self):
@@ -102,28 +104,33 @@ def ftp_makedirs_cwd(ftp, path, first_call=True):
             ftp.cwd(path)
 
 
-def read_tokenized_news():
-    wakati_paths = glob.glob('./data/token/**/*.token')
+def read_tokens():
+    wakati_paths = glob.glob('data/token/csv/**/*.token')
     print('reading token files')
     for path in wakati_paths:
         category = utils.extract_category(path)
         with open(path, 'r') as f:
-            all_wakati = f.read().split('\n')
+            all_wakati = f.read() #.split('\n')
         for line in all_wakati:
             tokens = line.split(' ')
             yield (category, tokens)
 
+
 if __name__ == '__main__':
     t = Tokenizer()
-    for category in conf.CATEGORIES:
-        category_path = '../../{0}/{1}/'.format(conf.DATA_DIR, category)
+    categories = glob.glob('../../data/csv/*')
+    #for category in conf.CATEGORIES:
+    for category in categories:
+        category_path = category
+        category = category_path.split('/')[-1]
+        #category_path = '../../{0}/{1}/'.format(conf.DATA_DIR, category)
         category_token_path = '../../{0}/{1}/'.format(conf.TOKEN_DIR, category)
         if not os.path.isdir(category_token_path):
             os.makedirs(category_token_path)
-        all_filenames = glob.glob(category_path+'/*')
-        for file_name in all_filenames:
-            print(file_name)
-            with open(file_name, 'r') as tmp:
+        filenames = glob.glob(category_path+'/*')
+
+        for filename in filenames:
+            with open(filename, 'r') as tmp:
                 reader = csv.reader(tmp)
                 result = [{
                     'category': rows[0],
@@ -131,9 +138,8 @@ if __name__ == '__main__':
                     'text_len': rows[2],
                     'text': t.tokenize(rows[3])
                 } for rows in reader]
-            short_file_name = (file_name.split('/')[-1]).split('.')[0]
-            print(short_file_name)
-            with open(category_token_path+short_file_name+'.token', "a") as file:
+
+            short_filename = (filename.split('/')[-1]).split('.')[0]
+            with open(category_token_path+short_filename+'.token', "a+") as file:
                 for chunk in result:
-                    # print(" ".join(chunk['title']+chunk['text']))
                     file.write((" ".join(chunk['title']+chunk['text'])))

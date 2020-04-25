@@ -12,17 +12,16 @@ def fetch_news(rss_dic: dict, time: dt, filetype: str) -> None:
     dict_to_file(
         chunk_dic=chunk_dic,
         time=time,
-        targetdir='../../data/'+filetype+'/{0}',
+        dir='../../data/'+filetype,
         filetype=filetype)
 
 
-def dict_to_file(chunk_dic: dict, time: dt, targetdir: str, filetype: str) -> None:
+def dict_to_file(chunk_dic: dict, time: dt, dir: str, filetype: str) -> None:
     for k, v in chunk_dic.items():
-        timestr = time.strftime('%Y-%m-%d')
-        targetdir = targetdir.format(k)
+        targetdir = dir+'/'+k
         if not os.path.isdir(targetdir):
             os.makedirs(targetdir)
-        filename = '{0}/{1}_{2}.{3}'.format(targetdir, k, timestr, filetype)
+        filename = '{0}/{1}_{2}.{3}'.format(targetdir, k, time.strftime('%Y-%m-%d'), filetype)
         write_news_file(filename, v, filetype)
 
 
@@ -69,11 +68,19 @@ def main(time, filetype):
     rss = RSSScraper()
 
     jp = rss.scrape_jp_newslist()
-    print(jp)
-    jp = {'47NEWS': 'https://headlines.yahoo.co.jp/rss/yonnana-dom.xml',
-          'ABCテレビ': 'https://headlines.yahoo.co.jp/rss/asahibc-dom.xml',
-          }
-    fetch_news(jp, time, filetype) #time よりあとの記事を取得
+    jp = {
+        '47NEWS': 'https://headlines.yahoo.co.jp/rss/yonnana-dom.xml',
+        'ABCテレビ': 'https://headlines.yahoo.co.jp/rss/asahibc-dom.xml',
+    }
+    univ = {
+        'AbemaTIMES':'https://headlines.yahoo.co.jp/rss/abema-c_int.xml',
+        'AP通信':'https://headlines.yahoo.co.jp/rss/aptsushinv-c_int.xml'
+        #'BUSINESS INSIDER JAPAN': 'https://headlines.yahoo.co.jp/rss/binsider-c_int.xml'
+    }
+    it = {
+        '36Kr Japan': 'https://headlines.yahoo.co.jp/rss/krjapan-c_sci.xml'
+    }
+    fetch_news(it, time, filetype) #time よりあとの記事を取得
 
 if __name__ == '__main__':
     main(dt.now()-td(days=7), 'csv')

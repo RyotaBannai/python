@@ -127,6 +127,3 @@ class RSSScraper:
 
     def scrape_all_newslist(self)->dict:
         return self.rss_dic
-
-if __name__ == '__main__':
-    y = Scraper()
