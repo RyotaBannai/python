@@ -3,40 +3,40 @@ import time
 import urllib.error
 import urllib.request as req
 import xml.etree.ElementTree as ET
-
+import re
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
 
 class Scraper:
-    def read_manuscript(self, news_url, oneline=False) -> str:
+    def get_text(self, news_url, oneline=False) -> str:
         # readしてHTMLデータをすべてDLしてしまう
-        resp = req.urlopen(news_url)
-        code = resp.getcode()
+        res = req.urlopen(news_url)
+        code = res.getcode()
         if code == 302:
-            resp = req.urlopscrape_newsen(resp.geturl())
-            html = resp.read()
+            res = req.urlopscrape_newsen(res.geturl())
+            html = res.read()
         else:
-            html = resp.read()
+            html = res.read()
         soup = BeautifulSoup(html, 'lxml')
         paragraphs = soup.select('div.paragraph')
-        manuscript = ''
+        text = ''
         for paragraph in paragraphs:
             try:
                 heading = paragraph.select_one('div.ynDetailHeading > em')
                 if heading is not None:
-                    manuscript += heading.string.strip(' 　')
+                    text += heading.string.strip(' 　')
                 detail_txt = paragraph.select_one('p.ynDetailText')
                 for con in detail_txt.contents:
                     if type(con) == Tag:
                         continue
-                    manuscript += con.string.strip(' 　')
+                    text += con.string.strip(' 　')
             except Exception:
                 print('Error occurred while scraping : ' + news_url)
         if oneline:
-            manuscript = manuscript.replace('\r', '')
-            manuscript = manuscript.replace('\n', '')
-        return manuscript
+            ptrn = re.compile(r'\r|\n|\u3000|\xa0')
+            text = ptrn.sub(r'', text)
+        return text
 
     def is_old_news(self, pubdate_str: str, specified_date: datetime) -> bool:
         if specified_date is None:
@@ -56,15 +56,15 @@ class Scraper:
             if self.is_old_news(pubdate_str, date) is True:
                 # rssなのでbreakでもよいが念の為
                 continue
-            title = item.find('title').text.strip(' 　')
+            title = item.find('title').text.strip(' 　').replace('\u3000', '')
             link = item.find('link').text
             category = item.find('category').text
             try:
-                manuscript = self.read_manuscript(link, oneline)
+                text = self.get_text(link, oneline)
                 chunk = {'category': category,
                          'title': title,
-                         'manuscript_len': len(manuscript),
-                         'manuscript': manuscript}
+                         'text_len': len(text),
+                         'text': text}
                 # カテゴリごとに保存ディレクトリを分けるので
                 # categoryをkeyにして辞書で返す
                 news_dic.setdefault(category, []).append(chunk)
