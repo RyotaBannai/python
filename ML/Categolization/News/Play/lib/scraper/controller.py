@@ -4,17 +4,24 @@ import os
 from datetime import datetime as dt, timedelta as td
 from pprint import pprint as pp
 
-from lib.workers.yahoo import Scraper, RSSScraper
+from lib.aggregator.yahoo import Scraper, RSSScraper
 
 
-def fetch_news(rss_dic, time, filetype):
+def fetch_news(rss_dic: dict, time: dt, filetype: str) -> None:
     chunk_dic = scrape(rss_dic, time)
+    dict_to_file(
+        chunk_dic=chunk_dic,
+        time=time,
+        targetdir='../../data/'+filetype+'/{0}',
+        filetype=filetype)
+
+
+def dict_to_file(chunk_dic: dict, time: dt, targetdir: str, filetype: str) -> None:
     for k, v in chunk_dic.items():
         timestr = time.strftime('%Y-%m-%d')
-        targetdir = '../../data/{0}/{1}'.format(filetype, k)
+        targetdir = targetdir.format(k)
         if not os.path.isdir(targetdir):
             os.makedirs(targetdir)
-
         filename = '{0}/{1}_{2}.{3}'.format(targetdir, k, timestr, filetype)
         write_news_file(filename, v, filetype)
 
@@ -54,8 +61,8 @@ def write_news_file(filename, chunks, filetype):
         with open(filename, 'a', newline='') as f:
             writer = csv.writer(f,  lineterminator='\n')
             for chunk in chunks:
-                writer.writerow([chunk['category'], chunk['title'],
-                                 chunk['text_len'], chunk['text']])
+                writer.writerow(
+                    [chunk['category'], chunk['title'], chunk['text_len'], chunk['text']])
 
 
 def main(time, filetype):
