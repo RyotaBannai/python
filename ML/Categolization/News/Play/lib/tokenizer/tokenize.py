@@ -118,19 +118,17 @@ def read_tokens():
 
 if __name__ == '__main__':
     t = Tokenizer()
-    categories = glob.glob('../../data/csv/*')
+    categories = conf.DATA_DIR.glob('*')
     #for category in conf.CATEGORIES:
-    for category in categories:
+    for category in list(categories):
         category_path = category
-        category = category_path.split('/')[-1]
-        #category_path = '../../{0}/{1}/'.format(conf.DATA_DIR, category)
-        category_token_path = '../../{0}/{1}/'.format(conf.TOKEN_DIR, category)
+        category = str(category_path).split('/')[-1]
+        category_token_path = str(conf.TOKEN_DIR / category)
         if not os.path.isdir(category_token_path):
             os.makedirs(category_token_path)
-        filenames = glob.glob(category_path+'/*')
-
-        for filename in filenames:
-            with open(filename, 'r') as tmp:
+        filenames = category_path.glob('*')
+        for filename in list(filenames):
+            with open(str(filename), 'r') as tmp:
                 reader = csv.reader(tmp)
                 result = [{
                     'category': rows[0],
@@ -139,7 +137,7 @@ if __name__ == '__main__':
                     'text': t.tokenize(rows[3])
                 } for rows in reader]
 
-            short_filename = (filename.split('/')[-1]).split('.')[0]
-            with open(category_token_path+short_filename+'.token', "a+") as file:
+            short_filename = (str(filename).split('/')[-1]).split('.')[0]
+            with open(category_token_path+'/'+short_filename+'.token', "a+") as file:
                 for chunk in result:
                     file.write((" ".join(chunk['title']+chunk['text'])))
