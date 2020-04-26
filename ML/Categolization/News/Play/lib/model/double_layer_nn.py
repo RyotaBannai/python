@@ -6,24 +6,31 @@ tf.disable_v2_behavior()
 
 
 class DoubleLayerNetwork:
+    """
+    b: bias
+    w: weight in each node
+
+    """
     def __init__(self, learning_rate,
-                 num_units1, num_units2, num_units3, num_units4,
+                 num_units1, num_units2,
                  vec_dim, num_categories, logfile
                  ):
         with tf.Graph().as_default():
-            self.prepare_model(learning_rate, num_units1, num_units2,
-                               num_units3, num_units4,
-                               vec_dim, num_categories)
+            self.prepare_model(learning_rate,
+                               num_units1, num_units2,
+                               vec_dim, num_categories
+                               )
             self.prepare_session(logfile)
 
     def prepare_model(self, learning_rate,
                       num_units1, num_units2,
-                      num_units3, num_units4, vec_dim, num_categories):
+                      vec_dim, num_categories
+                      ):
         with tf.name_scope('input'):
             x = tf.placeholder(tf.float32, [None, vec_dim])
 
         with tf.name_scope('hidden1'):
-            w1 = tf.Variable(tf.truncated_normal([vec_dim, num_units1]))
+            w1 = tf.Variable(tf.truncated_normal([vec_dim, num_units1]))  # Outputs random values from a truncated normal distribution.
             b1 = tf.Variable(tf.zeros(num_units1))
             hidden1 = tf.nn.relu(tf.matmul(x, w1) + b1)
 
@@ -32,32 +39,22 @@ class DoubleLayerNetwork:
         #     b2 = tf.Variable(tf.zeros(num_units2))
         #     hidden2 = tf.nn.relu(tf.matmul(hidden1, w2) + b2)
 
-        # with tf.name_scope('hidden3'):
-        #     w3 = tf.Variable(tf.truncated_normal([num_units2, num_units3]))
-        #     b3 = tf.Variable(tf.zeros(num_units3))
-        #     hidden3 = tf.nn.relu(tf.matmul(hidden2, w3) + b3)
-
-        # with tf.name_scope('hidden4'):
-        #     w4 = tf.Variable(tf.truncated_normal([num_units3, num_units4]))
-        #     b4 = tf.Variable(tf.zeros(num_units4))
-        #     hidden4 = tf.nn.relu(tf.matmul(hidden3, w4) + b4)
-
         with tf.name_scope('dropout'):
             keep_prob = tf.placeholder(tf.float32)
-            hidden1_drop = tf.nn.dropout(hidden1, keep_prob)
+            hidden1_drop = tf.nn.dropout(hidden1, keep_prob) # Computes dropout: randomly sets elements to zero to prevent overfitting. 1.0 = no dropout
 
         with tf.name_scope('output'):
             w0 = tf.Variable(tf.zeros([num_units1, num_categories]))
             b0 = tf.Variable(tf.zeros([num_categories]))
-            p = tf.nn.softmax(tf.matmul(hidden1_drop, w0) + b0)
+            p = tf.nn.softmax(tf.matmul(hidden1_drop, w0) + b0)  # 出力層 simoidとか使える
 
         with tf.name_scope('optimizer'):
             t = tf.placeholder(tf.float32, [None, num_categories])
             loss = -1 * tf.reduce_sum(t * tf.log(p))
-            train_step = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss)
+            train_step = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss) # minimize :  combines calls compute_gradients() and apply_gradients()
 
         with tf.name_scope('evaluator'):
-            correct_prediction = tf.equal(tf.argmax(p, 1), tf.argmax(t, 1))
+            correct_prediction = tf.equal(tf.argmax(p, 1), tf.argmax(t, 1))  # 精度計算: 第2パラメーターに1をセットすると、行ごとに最大となる列を返す.
             accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
         tf.summary.scalar('loss', loss)

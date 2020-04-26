@@ -24,7 +24,6 @@ def main():
 
     nn = dlnn.DoubleLayerNetwork(conf.LEARNING_RATE,
                                  conf.NUM_UNITS1, conf.NUM_UNITS2,
-                                 conf.NUM_UNITS3, conf.NUM_UNITS4,
                                  conf.PCA_DIMENSION, num_categories,
                                  conf.LOG_FILE)
 
@@ -33,7 +32,6 @@ def main():
         np.random.shuffle(train)
         batch_label = train[:conf.BATCH_SIZE, 0].tolist()
         batch_data = train[:conf.BATCH_SIZE, 1].tolist()
-
         nn.sess.run(nn.train_step, feed_dict={
             nn.x: batch_data, nn.t: batch_label,
             nn.keep_prob: conf.KEEP_PROB})
@@ -46,13 +44,16 @@ def main():
                 label=predict_label
             )
 
-def stdout_log(step, curModel, data, label):
-    summary, loss_val, acc_val = curModel.sess.run(
-        [curModel.summary, curModel.loss, curModel.accuracy],
-        feed_dict={curModel.x: data, curModel.t: label, curModel.keep_prob: 1.0}
+
+def stdout_log(step, cur_model, data, label):
+    summary, loss_val, acc_val = cur_model.sess.run(
+        [cur_model.summary, cur_model.loss, cur_model.accuracy],
+        feed_dict={cur_model.x: data, cur_model.t: label, cur_model.keep_prob: 1.0}
     )
     print('Step: %d, Loss: %f, Accuracy: %f' % (step, loss_val, acc_val))
-    curModel.writer.add_summary(summary, step)
+    cur_model.writer.add_summary(summary, step)
+
 
 if __name__ == '__main__':
     main()
+
