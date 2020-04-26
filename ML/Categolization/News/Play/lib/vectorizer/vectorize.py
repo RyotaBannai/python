@@ -109,7 +109,7 @@ class PcaTfidfVectorizer:
         # batch = conf.PCA_BATCH_DATA_LENGTH
         # for i in range(0, news_len, batch):
         #     chunks = tokenized_news[i:i + batch]
-        #     mat = np.array([tfidf(self.meta, _Counter) for _, _Counter in chunks])
+        #     mat = np.array([vector(self.meta, _Counter) for _, _Counter in chunks])
         #     ipca.partial_fit(mat)
 
         mat = np.array([tfidf(self.meta, _Counter) for _, _Counter in tokenized_news])
@@ -153,11 +153,8 @@ def main():
     if not os.path.isdir(dirname):
         os.mkdir(dirname)
 
-    utils.pickle_dump(meta, dirname + '/tfidf.meta')
+    utils.pickle_dump(meta, dirname + '/vector-meta.pkl')
     print('Meta data was dumped.')
 
-    utils.pickle_dump(learning_data, dirname + '/tfidf.data')
+    utils.pickle_dump(learning_data, dirname + '/vector-data.pkl')
     print('Learning data was dumped.')
-
-if __name__ == '__main__':
-    main()

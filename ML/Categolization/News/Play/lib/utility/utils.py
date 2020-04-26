@@ -9,10 +9,15 @@ from config import conf
 
 
 def pickle_load(filepath) -> None:
-    with open(filepath, mode='rb') as f:
-        data = pickle.load(f)
-    return data
+    return CustomUnpickler(open(filepath, mode='rb')).load()
 
+class CustomUnpickler(pickle.Unpickler):
+
+    def find_class(self, module, name):
+        if name == 'Metadata':
+            from lib.vectorizer.vectorize import Metadata
+            return Metadata
+        return super().find_class(module, name)
 
 def pickle_dump(dumpdata, filepath: str) -> None:
     with open(filepath, mode='wb') as f:
