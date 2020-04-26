@@ -1,3 +1,5 @@
+
+import os
 import numpy as np
 
 from config import conf
@@ -6,8 +8,6 @@ from lib.model import double_layer_nn as dlnn
 
 
 def main():
-    print('start...')
-    print(conf.METADATA_FILE)
     meta = utils.pickle_load(conf.METADATA_FILE)
     label_and_data = utils.pickle_load(conf.DATA_FILE)
     np.random.shuffle(label_and_data)
@@ -39,10 +39,15 @@ def main():
         if step % 100 == 0:
             stdout_log(
                 step=step,
-                curModel=nn,
+                cur_model=nn,
                 data=predict_data,
                 label=predict_label
             )
+
+            dirname = str(conf.CORE_DIR)
+            if not os.path.isdir(dirname):
+                os.mkdir(dirname)
+            nn.saver.save(nn.sess, dirname + "/model.ckpt")
 
 
 def stdout_log(step, cur_model, data, label):

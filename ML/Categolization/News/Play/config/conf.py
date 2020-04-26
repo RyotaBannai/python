@@ -7,6 +7,7 @@ TOKEN_DIR = PACKAGE_DIR / 'data/token/csv'
 TFIDF_DIR = PACKAGE_DIR / 'data/vector'
 DATA_FILE = PACKAGE_DIR / 'data/vector/tfidf-data.pkl'
 METADATA_FILE = PACKAGE_DIR / 'data/vector/tfidf-meta.pkl'
+CORE_DIR = PACKAGE_DIR / 'core/params'
 LOG_FILE = PACKAGE_DIR / 'log/tmp/yn_categories_logs'
 
 KEEP_PROB = 0.8

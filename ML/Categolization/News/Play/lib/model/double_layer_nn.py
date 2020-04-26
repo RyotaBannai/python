@@ -3,6 +3,8 @@
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 # EOS
+import os
+from config import conf
 
 
 class DoubleLayerNetwork:
@@ -76,10 +78,15 @@ class DoubleLayerNetwork:
 
     def prepare_session(self, logfile):
         sess = tf.InteractiveSession()
+        saver = tf.train.Saver()
+        saved_prams = str(conf.CORE_DIR / "model.ckpt")
+        if os.path.exists(saved_prams+'.index'):
+            saver.restore(sess, saved_prams)
         sess.run(tf.global_variables_initializer())
         summary = tf.summary.merge_all()
         writer = tf.summary.FileWriter(logfile, sess.graph)
 
         self.sess = sess
+        self.saver = saver
         self.summary = summary
         self.writer = writer
