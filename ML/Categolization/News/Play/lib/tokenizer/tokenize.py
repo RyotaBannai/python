@@ -105,14 +105,14 @@ def ftp_makedirs_cwd(ftp, path, first_call=True):
 
 
 def read_tokens():
-    wakati_paths = glob.glob('data/token/csv/**/*.token')
+    wakati_paths = conf.TOKEN_DIR.glob('**/*.token')
     print('reading token files')
     for path in wakati_paths:
         category = utils.extract_category(path)
         with open(path, 'r') as f:
-            all_wakati = f.read() #.split('\n')
+            all_wakati = f.read().split('\n')
         for line in all_wakati:
-            tokens = line.split(' ')
+            tokens = line.split(',')
             yield (category, tokens)
 
 
@@ -140,4 +140,4 @@ if __name__ == '__main__':
             short_filename = (str(filename).split('/')[-1]).split('.')[0]
             with open(category_token_path+'/'+short_filename+'.token', "a+") as file:
                 for chunk in result:
-                    file.write((" ".join(chunk['title']+chunk['text'])))
+                    file.write((",".join(chunk['title']+chunk['text'])+'\n'))
