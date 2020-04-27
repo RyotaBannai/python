@@ -4,7 +4,7 @@ import numpy as np
 
 from config import conf
 from lib.utility import utils
-from lib.model import double_layer_nn as dlnn
+from lib.model import dlnn_tf as dlnn
 
 
 def main():
@@ -22,24 +22,24 @@ def main():
     predict_label = test[:, 0].tolist()
     predict_data = test[:, 1].tolist()
 
-    nn = dlnn.DoubleLayerNetwork(conf.LEARNING_RATE,
-                                 conf.NUM_UNITS1, conf.NUM_UNITS2,
-                                 conf.PCA_DIMENSION, num_categories,
-                                 conf.LOG_FILE)
+    model = dlnn.DoubleLayerNetwork(conf.LEARNING_RATE,
+                                    conf.NUM_UNITS1, conf.NUM_UNITS2,
+                                    conf.PCA_DIMENSION, num_categories,
+                                    conf.LOG_FILE)
 
     for step in range(conf.TOTAL_STEP):
 
         np.random.shuffle(train)
         batch_label = train[:conf.BATCH_SIZE, 0].tolist()
         batch_data = train[:conf.BATCH_SIZE, 1].tolist()
-        nn.sess.run(nn.train_step, feed_dict={
-            nn.x: batch_data, nn.t: batch_label,
-            nn.keep_prob: conf.KEEP_PROB})
+        model.sess.run(model.train_step, feed_dict={
+            model.x: batch_data, model.t: batch_label,
+            model.keep_prob: conf.KEEP_PROB})
 
         if step % 100 == 0:
             stdout_log(
                 step=step,
-                cur_model=nn,
+                cur_model=model,
                 data=predict_data,
                 label=predict_label
             )
@@ -47,7 +47,8 @@ def main():
             dirname = str(conf.CORE_DIR)
             if not os.path.isdir(dirname):
                 os.mkdir(dirname)
-            nn.saver.save(nn.sess, dirname + "/model.ckpt")
+            model.saver.save(model.sess, dirname + "/model.ckpt")
+
 
 
 def stdout_log(step, cur_model, data, label):
