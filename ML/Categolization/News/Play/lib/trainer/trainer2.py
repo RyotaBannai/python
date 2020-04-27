@@ -19,9 +19,9 @@ def main():
     print(meta.categories)
     #
     np.random.shuffle(train)
-    label = train[:, 0]
+    labels = train[:, 0]
     data = train[:, 1]
-    n_batch = len(label)
+    n_batch = len(labels)
     n_categories = len(meta.categories)
     predict_label = test[:, 0].tolist()
     predict_data = test[:, 1].tolist()
@@ -29,10 +29,19 @@ def main():
     model = dlnn()
     model.set_model(n_batch, conf.NUM_UNITS1, n_categories)
 
-    print(np.array([label]).shape)
-    print(np.array([label]).shape)
-    print(n_categories)
-    model.fit(np.array([data]), np.array([label]))
+    listed_data, listed_label = [],  []
+    data_append, label_append = listed_data.append, listed_label.append
+    for d in data:
+        data_append(list(map(float, d)))
+    for label in labels:
+        label_append(list(map(float, label)))
+
+    #print(np.array(listed_label).shape)
+    print(np.random.random((1000, 100)).shape)
+    model.fit(
+        np.array(listed_data),
+        np.array(listed_label)
+    )
 
 if __name__ == '__main__':
     main()
