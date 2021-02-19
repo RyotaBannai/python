@@ -139,7 +139,7 @@ def main():
     meta = Metadata()
     meta.build(min_token_len=conf.MINIMUM_TOKEN_LENGTH)
     print('TFIDF calculated')
-    print(meta.category_dic)
+    print(meta)
     # print(meta.token_to_docid)
     # print(meta.tokenized_news)
     # print(meta.idf)
@@ -158,3 +158,5 @@ def main():
 
     utils.pickle_dump(learning_data, dirname + '/vector-data.pkl')
     print('Learning data was dumped.')
+if __name__ == '__main__':
+    main()

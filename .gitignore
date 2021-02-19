@@ -6,3 +6,8 @@
 .ipynb_checkpoints/
 __pycache__/
 advanced_usage/.mypy_cache/
+.DS_Store
+ML/Categolization/News/Play/core/
+ML/Categolization/News/Play/data/
+ML/Categolization/News/Play/log/
+ML/Categolization/News/data/

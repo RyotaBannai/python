@@ -26,9 +26,6 @@ def main():
     predict_label = test[:, 0].tolist()
     predict_data = test[:, 1].tolist()
 
-    model = dlnn()
-    model.set_model(n_batch, conf.NUM_UNITS1, n_categories)
-
     listed_data, listed_label = [],  []
     data_append, label_append = listed_data.append, listed_label.append
     for d in data:
@@ -36,12 +33,10 @@ def main():
     for label in labels:
         label_append(list(map(float, label)))
 
-    #print(np.array(listed_label).shape)
-    print(np.random.random((1000, 100)).shape)
-    model.fit(
-        np.array(listed_data),
-        np.array(listed_label)
-    )
+    model = dlnn(conf.NUM_UNITS1, n_categories,
+                 np.array(listed_data), np.array(listed_label))
+    model.set_model()
+    model.fit()
 
 if __name__ == '__main__':
     main()
