@@ -17,9 +17,18 @@ class ResultChain:
         self.result = result
 
     @classmethod
-    def run(cls, func: Callable) -> "ResultChain":
-        instance = cls(result=Result(ok=Ok))
-        return instance.and_then(func=func)
+    def run(
+        cls, func: Callable, initial_result: Optional[Result] = None
+    ) -> "ResultChain":
+        if initial_result is not None and not isinstance(initial_result, Result):
+            return cls(
+                result=Result(
+                    err=Exception("initial_result must be instance of Result")
+                )
+            )
+        return cls(
+            result=Result(ok=Ok) if initial_result is None else initial_result
+        ).and_then(func=func)
 
     # helpers
     def and_then(self, func: Callable) -> "ResultChain":
@@ -34,13 +43,18 @@ class ResultChain:
                 )
             )
         if self.result is None:
-            return ResultChain(result=Result(err=Exception("Call init first.")))
+            return ResultChain(result=Result(err=Exception("Call run first.")))
 
         if self.result.err is not None:
             return ResultChain(result=self.result)
         else:
             try:
-                func_result: Any = func()
+                # parameters returns OrderedDict
+                if "result" in signature(func).parameters:
+                    func_result: Any = func(result=self.result)
+                else:
+                    func_result: Any = func()
+
                 if isinstance(func_result, Result):
                     return ResultChain(result=func_result)
                 else:
@@ -77,14 +91,30 @@ if __name__ == "__main__":
     # partial works as long as the given func has return annotation.
     my_partial = partial(my_lambda_func)
 
+    def counter(result: Result = None) -> Result:
+        if result is not None:
+            return Result(
+                ok=result.ok + 1
+                if result.err is None and isinstance(result.ok, int)
+                else 1
+            )
+        else:
+            return Result(ok=1)
+
     # run funcs orderly and if one of them failed the result all fail.
+    # result_chain: ResultChain = (
+    #     ResultChain.run(func=my_initial_func)
+    #     .and_then(func=my_second_func)
+    #     .and_then(func=my_lambda_func)
+    #     .and_then(func=my_partial)
+    #     .and_then(func=partial(my_initial_func))
+    #     .and_then(func=my_third_func)
+    # )
+
     result_chain: ResultChain = (
-        ResultChain.run(func=my_initial_func)
-        .and_then(func=my_second_func)
-        .and_then(func=my_lambda_func)
-        .and_then(func=my_partial)
-        .and_then(func=partial(my_initial_func))
-        .and_then(func=my_third_func)
+        ResultChain.run(func=counter, initial_result=Result(ok=10))
+        .and_then(func=counter)
+        .and_then(func=counter)
     )
 
     # print(result_chain)
@@ -97,5 +127,7 @@ if __name__ == "__main__":
         print(result_chain.unwrap())
     else:
         print("OK")
+        print(result_chain.unwrap())
+        # Result(ok=3, err=None)
 
     # ...
